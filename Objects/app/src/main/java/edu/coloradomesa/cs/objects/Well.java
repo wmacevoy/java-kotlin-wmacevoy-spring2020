@@ -4,6 +4,7 @@ public class Well { // class is a blueprint
 
     public Well(double depth) {
         if (depth > 0.0) {
+            // change depth only if positive
             this.depth = depth;
         } else {
             String message = "Invalid depth " + depth  + "." +
