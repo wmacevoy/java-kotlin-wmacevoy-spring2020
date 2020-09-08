@@ -70,4 +70,21 @@ public class WellTest {
         instance.setPoisoned(true);
         assertEquals(true,instance.isPoisoned());
     }
+
+    void makeABadWell() {
+        Well bad = new Well(-3.9);
+        System.out.println("Well depth is " + bad.getDepth());
+    }
+
+    @Test
+    public void showCatchingException() {
+        try {
+            makeABadWell();
+        } catch (IllegalArgumentException ex) {
+            System.out.println("caught exception: " + ex);
+            ex.printStackTrace();
+        } finally {
+            // executed whether and exception happened or not.
+        }
+    }
 }

@@ -7,6 +7,7 @@ public class Well { // class is a blueprint
             // change depth only if positive
             this.depth = depth;
         } else {
+            // otherwise throw an error
             String message = "Invalid depth " + depth  + "." +
                     " Must be positive.";
             throw new IllegalArgumentException(message);
