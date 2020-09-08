@@ -8,9 +8,8 @@ public class WellTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void invalidDepth() throws Exception {
-        double wellDepth = -35.2;
-        Well instance = new Well(wellDepth);
-        assertEquals(wellDepth, instance.getDepth(), 0.0);
+        double badWellDepth = -35.2;
+        Well instance = new Well(badWellDepth);
     }
 
     @Test(expected = IllegalArgumentException.class)
