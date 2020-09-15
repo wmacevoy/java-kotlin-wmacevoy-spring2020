@@ -1,8 +1,8 @@
 package edu.coloradomesa.cs.oop;
 
-public class Well { // class is a blueprint
+public class WaterWell { // class is a blueprint
 
-    public Well(double depth) {
+    public WaterWell(double depth) {
         if (depth > 0.0) {
             // change depth only if positive
             this.depth = depth;
