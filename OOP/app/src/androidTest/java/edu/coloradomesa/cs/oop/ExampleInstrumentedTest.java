@@ -1,4 +1,4 @@
-package edu.coloradomesa.cs.objects;
+package edu.coloradomesa.cs.oop;
 
 import android.content.Context;
 

@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="edu.coloradomesa.cs.objects">
+    package="edu.coloradomesa.cs.oop">
 
     <application
         android:allowBackup="true"

@@ -1,4 +1,4 @@
-package edu.coloradomesa.cs.objects;
+package edu.coloradomesa.cs.oop;
 
 public class Well { // class is a blueprint
 
