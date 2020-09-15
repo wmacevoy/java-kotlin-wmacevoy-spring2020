@@ -15,4 +15,14 @@ public class OilWell extends DefaultWell { // class is a blueprint
     public void setOilLevel(double oilLevel) {
         setLevel(oilLevel);
     }
+
+    public boolean isCapped() {
+        return capped;
+    }
+
+    public void setCapped(boolean capped) {
+        this.capped = capped;
+    }
+
+    private boolean capped = false;
 }

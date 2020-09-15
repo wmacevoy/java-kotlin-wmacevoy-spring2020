@@ -2,9 +2,7 @@ package edu.coloradomesa.cs.oop;
 
 public class DefaultWell implements Well {
     private double depth;
-    private static boolean depthOk(double depth) {
-        return depth > 0.0;
-    }
+
     private static double checkDepth(double depth) {
         if (depth > 0.0) {
             return depth;

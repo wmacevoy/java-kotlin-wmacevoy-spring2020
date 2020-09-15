@@ -54,6 +54,16 @@ public class DefaultWellTest {
     }
 
     @Test
+    public void setDepth() {
+        double wellDepth = 35.2;
+        DefaultWell instance = new DefaultWell(wellDepth);
+        assertEquals(wellDepth, instance.getDepth(),0.0);
+        double newWellDepth = 10.0;
+        instance.setDepth(newWellDepth);
+        assertEquals(newWellDepth, instance.getDepth(),0.0);
+    }
+
+    @Test
     public void isEmptyTrue() {
         double wellDepth = 35.2;
         DefaultWell instance = new DefaultWell(wellDepth);
