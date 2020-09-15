@@ -7,9 +7,15 @@ import static org.junit.Assert.*;
 public class WellTest {
 
     @Test(expected = IllegalArgumentException.class)
-    public void invalidDepth() throws Exception {
+    public void invalidDepth() {
         double badWellDepth = -35.2;
-        Well instance = new Well(badWellDepth);
+        String exceptionMessage = "Invalid depth " + badWellDepth + ". Must be positive.";
+        try {
+            Well instance = new Well(-badWellDepth);
+        } catch (IllegalArgumentException ex) {
+            assertEquals(exceptionMessage, ex.getMessage());
+            throw ex;
+        }
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -24,14 +30,14 @@ public class WellTest {
     public void getDepth() {
         double wellDepth = 35.2;
         Well instance = new Well(wellDepth);
-        assertEquals(wellDepth, instance.getDepth(), 0.0);
+        assertEquals("testing bad well.",wellDepth, instance.getDepth(),0.0);
     }
 
     @Test
     public void isDryTrue() {
         double wellDepth = 35.2;
         Well instance = new Well(wellDepth);
-        assertEquals(true, instance.isDry());
+        assertEquals(false, instance.isDry());
     }
 
     @Test
