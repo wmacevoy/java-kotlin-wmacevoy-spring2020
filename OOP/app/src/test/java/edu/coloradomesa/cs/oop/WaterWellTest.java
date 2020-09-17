@@ -57,6 +57,16 @@ public class WaterWellTest {
     }
 
     @Test
+    public void makeDepthAndLevelWell() {
+        double depth = 10.0;
+        double level = 5.0;
+        WaterWell instance = new WaterWell(depth, level);
+        assertEquals(depth, instance.getDepth(),0.0);
+        assertEquals(level, instance.getLevel(), 0.0);
+    }
+
+
+    @Test
     public void setWaterLevel() {
         double wellDepth = 35.2;
         WaterWell instance = new WaterWell(wellDepth);

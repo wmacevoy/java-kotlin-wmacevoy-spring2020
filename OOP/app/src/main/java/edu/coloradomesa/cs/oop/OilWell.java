@@ -6,6 +6,9 @@ public class OilWell extends DefaultWell { // class is a blueprint
         super(depth);
     }
 
+    public OilWell(double depth, double level) {
+        super(depth, level);
+    }
 
     public double getOilLevel() {
         return getLevel();

@@ -25,6 +25,11 @@ public class OilWellTest {
     }
 
     @Test
-    public void setCapped() {
+    public void makeDepthAndLevelWell() {
+        double depth = 10.0;
+        double level = 5.0;
+        OilWell instance = new OilWell(depth, level);
+        assertEquals(depth, instance.getDepth(),0.0);
+        assertEquals(level, instance.getLevel(), 0.0);
     }
 }
