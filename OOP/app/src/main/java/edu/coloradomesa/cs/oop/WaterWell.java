@@ -7,6 +7,7 @@ public class WaterWell extends DefaultWell { // class is a blueprint
         boolean isDry();
     }
 
+    // inner class
     public class MiddleBrick implements Brick {
         double heightAboveWellBottom;
         MiddleBrick(double heightAboveWellBottom) {

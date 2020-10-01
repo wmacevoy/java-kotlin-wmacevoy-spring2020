@@ -1,6 +1,7 @@
 package edu.coloradomesa.cs.collections;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Set;
 
 import static java.lang.Math.*;
@@ -35,6 +36,8 @@ public class Location implements Comparable < Location > {
         this.latitude=normalizeDegreeAngle(latitude);
     }
 
+    // transitive: a < b && b < c , then a < c
+    //  equality: a == b  <==> !(a<b) && !(b<a)
     @Override
     public int compareTo(Location other) {
         int cmp;
@@ -51,6 +54,11 @@ public class Location implements Comparable < Location > {
             return cmp;
         }
         return 0;
+    }
+
+    @Override
+    public boolean equals(Object to) {
+        return compareTo((Location) to)==0;
     }
 
     public double approximateNauticalMilesTo(Location to) {
@@ -97,7 +105,7 @@ public class Location implements Comparable < Location > {
         return 7*name.hashCode()+13*Double.hashCode(this.longitude)+17*Double.hashCode(this.latitude);
     }
 
-    public static void addNearbyLocationsInNauticalMiles(Collection<Location> results, Location center, double nauticalMiles, Collection<Location> search)  {
+    public static void addNearbyLocationsInNauticalMiles(Collection<Location> results, Location center, double nauticalMiles, Iterable<Location> search)  {
         for (Location at : search) {
             if (center.approximateNauticalMilesTo(at) <= nauticalMiles) {
                 results.add(at);
@@ -105,12 +113,12 @@ public class Location implements Comparable < Location > {
         }
     }
 
-    public static void addNearbyLocationsInMeters(Collection<Location> results, Location center, double meters, Collection<Location> search)  {
+    public static void addNearbyLocationsInMeters(Collection<Location> results, Location center, double meters, Iterable<Location> search)  {
         double nauticalMiles = meters/METERS_PER_NAUTICAL_MILE;
         addNearbyLocationsInNauticalMiles(results,center,nauticalMiles, search);
     }
 
-    public static void addNearbyLocationsInMiles(Collection<Location> results, Location center, double miles, Collection<Location> search)  {
+    public static void addNearbyLocationsInMiles(Collection<Location> results, Location center, double miles, Iterable<Location> search)  {
         double meters = miles*METERS_PER_MILE;
         addNearbyLocationsInMeters(results,center,meters, search);
     }
