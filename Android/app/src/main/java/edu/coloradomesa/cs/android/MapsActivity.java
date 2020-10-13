@@ -1,62 +1,49 @@
 package edu.coloradomesa.cs.android;
 
-import androidx.fragment.app.FragmentActivity;
+import androidx.navigation.ui.AppBarConfiguration;
 
-import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.TreeMap;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+import edu.coloradomesa.cs.android.ui.home.GoogleMapFragment;
 
-    private GoogleMap mMap;
+public class MapsActivity extends AppCompatActivity {
+    public static void i(String msg) {
+        Log.i(LOG_TAG,msg);
+    }
+    public static void e(String msg) {
+        Log.e(LOG_TAG,msg);
+    }
+    public static void w(String msg) {
+        Log.w(LOG_TAG,msg);
+    }
+    public static final String LOG_TAG="MapsActivity";
+    GoogleMapFragment mGoogleMapFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        Log.i( MapsActivity.LOG_TAG,"onCreate()");
+        onCreateBottomNav();
     }
 
-    LatLng mSydneyLatLng = new LatLng(-34, 151);
-    MarkerOptions mSydneyMarkerOptions = new MarkerOptions().position(mSydneyLatLng).title("Marker in Sydney");
-    Marker mSydneyMarker;
-
-    LatLng mGJLatLng = new LatLng(39.0+4.0/60, -(108.0+34.0/60.0));
-    MarkerOptions mGJMarkerOptions = new MarkerOptions().position(mGJLatLng).title("Marker in Grand Junction");
-    Marker mGJMarker;
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
-    public void onMoveToGJ() {
-
-    }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        mSydneyMarker=mMap.addMarker(mSydneyMarkerOptions);
-        mGJMarker=mMap.addMarker(mGJMarkerOptions);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(mGJLatLng));
+    private void onCreateBottomNav() {
+        BottomNavigationView navView = findViewById(R.id.nav_view);
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
+                .build();
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        NavigationUI.setupWithNavController(navView, navController);
     }
 }
