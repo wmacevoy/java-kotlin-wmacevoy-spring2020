@@ -16,7 +16,7 @@ public class AppFragment extends Fragment {
 
     public Model getModel() {
         if (model == null) {
-            model = new ViewModelProvider(this).get(Model.class);
+            model = getApp().getModel();  //new ViewModelProvider(this).get(Model.class);
         }
         return model;
     }
