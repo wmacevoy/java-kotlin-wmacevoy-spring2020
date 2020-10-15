@@ -1,14 +1,34 @@
 package edu.coloradomesa.cs.android;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.io.IOException;
+import java.io.Serializable;
 
-public class ConstLatLng implements Comparable<ConstLatLng> {
-    private Gson gson = new Gson();
+public class ConstLatLng implements Comparable<ConstLatLng>, Serializable {
+    static final long serialVersionUID = 1L;
+
+    private void writeObject(java.io.ObjectOutputStream out)
+            throws IOException {
+        out.writeDouble(latitude);
+        out.writeDouble(longitude);
+    }
+
+    private void readObject(java.io.ObjectInputStream in)
+            throws IOException, ClassNotFoundException
+
+    {
+        latitude=normalizeAngle(in.readDouble());
+        longitude=normalizeAngle(in.readDouble());
+    }
+
+    public static final ConstLatLng SYDNEY_NSW_AUSTRALIA = new ConstLatLng(-34, 151);
+    public static final ConstLatLng GRAND_JUNCTION_CO_USA = new ConstLatLng(39.0+4.0/60, -(108.0+34.0/60.0));
+
+    private static Gson GSON = new Gson();
     public static double normalizeAngle(double angle) {
         angle = Math.IEEEremainder(angle,360.0);
         if (angle > 180.0) { angle -= 360.0; }
@@ -38,13 +58,17 @@ public class ConstLatLng implements Comparable<ConstLatLng> {
 
 
     ConstLatLng(String json) {
-        LatLng latLng = gson.fromJson(json,LatLng.class);
+        LatLng latLng = GSON.fromJson(json,LatLng.class);
         this.latitude = normalizeAngle(latLng.latitude);
         this.longitude = normalizeAngle(latLng.longitude);
     }
 
     public LatLng getLatLng() {
         return new LatLng(latitude,longitude);
+    }
+
+    public MarkerOptions getMarkerOptions() {
+        return new MarkerOptions().position(getLatLng());
     }
 
     @Override
@@ -74,21 +98,5 @@ public class ConstLatLng implements Comparable<ConstLatLng> {
     @Override
     public int hashCode() {
         return Double.hashCode(latitude)+3*Double.hashCode(longitude);
-    }
-
-    static private double jsonDouble(JSONObject json, String key, double defaultValue) {
-        try {
-            return json.getDouble(key);
-        } catch (JSONException ex) {
-            return defaultValue;
-        }
-    }
-
-    static private JSONObject jsonObject(String json) {
-        try {
-            return new JSONObject(json);
-        } catch (JSONException ex) {
-            return new JSONObject();
-        }
     }
 }

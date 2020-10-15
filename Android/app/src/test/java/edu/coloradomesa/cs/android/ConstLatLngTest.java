@@ -4,6 +4,12 @@ import com.google.android.gms.maps.model.LatLng;
 
 import org.junit.Test;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import static org.junit.Assert.*;
 
 public class ConstLatLngTest {
@@ -66,5 +72,27 @@ public class ConstLatLngTest {
         ConstLatLng q = new ConstLatLng(json);
         assertEquals(p,q);
 
+    }
+
+    // https://gist.github.com/Arci/334b2f7d8def772e1b26
+    private static byte[] serialize(Object obj) throws IOException {
+        ByteArrayOutputStream b = new ByteArrayOutputStream();
+        ObjectOutputStream o = new ObjectOutputStream(b);
+        o.writeObject(obj);
+        return b.toByteArray();
+    }
+
+    private static Object deserialize(byte[] bytes) throws IOException, ClassNotFoundException {
+        ByteArrayInputStream b = new ByteArrayInputStream(bytes);
+        ObjectInputStream o = new ObjectInputStream(b);
+        return o.readObject();
+    }
+
+    @Test
+    public void serializable() throws Exception {
+        ConstLatLng p = new ConstLatLng(180,-179);
+        byte[] data = serialize(p);
+        ConstLatLng q = (ConstLatLng) deserialize(data);
+        assertEquals(p,q);
     }
 }

@@ -4,32 +4,44 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
+import edu.coloradomesa.cs.android.AppFragment;
+import edu.coloradomesa.cs.android.ConstLatLng;
 import edu.coloradomesa.cs.android.R;
 
-public class DashboardFragment extends Fragment {
-
-    private DashboardViewModel dashboardViewModel;
-
+public class DashboardFragment extends AppFragment {
+    View root;
+    TextView textView;
+    Button sydney;
+    Button gj;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        dashboardViewModel =
-                ViewModelProviders.of(this).get(DashboardViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
-        final TextView textView = root.findViewById(R.id.text_dashboard);
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+        root = inflater.inflate(R.layout.fragment_dashboard, container, false);
+        textView = root.findViewById(R.id.text_dashboard);
+        sydney = root.findViewById(R.id.sydney_dashboard);
+        sydney.setOnClickListener(view -> clickSydney());
+        gj = root.findViewById(R.id.gj_dashboard);
+        gj.setOnClickListener(view -> clickGJ());
+        getModel().getDashboardTextLiveData().observe(getViewLifecycleOwner(),
+           text -> textView.setText(text));
+        // getState().loadFrom(savedInstanceState);
+        getModel().setDashboardText(getModel().getDashboardText());
         return root;
     }
+
+    void clickSydney() {
+        getModel().setCenter(ConstLatLng.SYDNEY_NSW_AUSTRALIA);
+        getModel().setDashboardText("off to Sydney!");
+        getModel().setNotificationsText(getModel().getNotificationsText() + " -> sydney");
+    }
+    void clickGJ() {
+        getModel().setCenter(ConstLatLng.GRAND_JUNCTION_CO_USA);
+        getModel().setDashboardText("off to Grand Junction!");
+        getModel().setNotificationsText(getModel().getNotificationsText() + " -> gj");
+    }
+
 }
