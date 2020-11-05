@@ -6,8 +6,8 @@ import java.util.*
 class Loowater {
     var input : Scanner = Scanner(System.`in`)
     var output : PrintStream = System.out
-    var knights : ArrayList<Int> = ArrayList<Int>()
     var heads : ArrayList<Int> = ArrayList<Int>()
+    var knights : ArrayList<Int> = ArrayList<Int>()
     fun read() : Boolean {
         var nHeads = input.nextInt()
         var nKnights = input.nextInt()
@@ -22,6 +22,26 @@ class Loowater {
             knights.add(input.nextInt())
         }
         return nKnights != 0 && nHeads != 0
+    }
+
+    var coins : Int = 0
+    var possible : Boolean = true
+
+    fun solve() {
+        coins = 0
+        possible = true
+    }
+
+    fun write() {
+        output.write(coins)
+    }
+
+
+    fun run() {
+        while (read()) {
+            solve()
+            write()
+        }
     }
 
 }
