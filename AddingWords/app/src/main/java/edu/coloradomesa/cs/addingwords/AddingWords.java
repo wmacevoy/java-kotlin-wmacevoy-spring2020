@@ -1,5 +1,6 @@
 package edu.coloradomesa.cs.addingwords;
 
+// solves kattis problem: https://open.kattis.com/problems/addingwords
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Scanner;
