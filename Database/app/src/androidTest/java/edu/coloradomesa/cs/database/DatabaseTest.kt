@@ -12,16 +12,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 import org.junit.Assert.*
-
-object Users : Table() {
-    val id = varchar("id", 10) // Column<String>
-    val name = varchar("name", length = 50) // Column<String>
-    val cityId = (integer("city_id") references Cities.id).nullable() // Column<Int?>
-
-    override val primaryKey = PrimaryKey(id, name = "PK_User_ID") // name is optional here
-}
-
-
+import java.sql.Connection
 
 
 /**
@@ -30,8 +21,10 @@ object Users : Table() {
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 @RunWith(AndroidJUnit4::class)
-class ExampleInstrumentedTest {
+class DatabaseTest {
+    // Kotlin style getter for test application context
     val context get() = InstrumentationRegistry.getInstrumentation().targetContext
+
     @Test
     fun useAppContext() {
         assertEquals("edu.coloradomesa.cs.database", context.packageName)
@@ -41,26 +34,31 @@ class ExampleInstrumentedTest {
 
     @Test
     fun kotlinConnect() {
-        var db = DB()
-        db.context = context
-        db.createTables()
-        db.showTables()
-        db.dropTables()
+        var db = DatabaseKotlin(context)
+        db.initialize()
     }
 
     @Test
     fun kotlinDB() {
-        var db = DB()
-        db.context = context
-        db.useDB()
+        var dbk = DatabaseKotlin(context)
+        dbk.useDB()
     }
 
     @Test
-    fun javaConnecct() {
-        var database = DatabaseJava()
-        database.setContext(context)
-        var connection = database.connection
+    fun javaConnect() {
+        var dbj = DatabaseJava(context)
+        var connection = dbj.connection
         assertNotNull(connection)
 
+    }
+
+    @Test
+    fun eqContext() {
+        var dbk = DatabaseKotlin(context)
+        var dbj = DatabaseJava(context)
+        assertEquals(dbk.user,dbj.user)
+        assertEquals(dbk.password,dbj.password)
+        assertEquals(dbk.host,dbj.host)
+        assertEquals(dbk.port,dbj.port)
     }
 }
