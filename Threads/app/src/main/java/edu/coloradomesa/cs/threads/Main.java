@@ -32,6 +32,7 @@ class Messages extends Thread {
         Message copy = message.copy();
         synchronized (queueMutex) {
             queue.add(copy);
+            queueMutex.notifyAll(); // other threads care about this change
         }
     }
     boolean done() {
@@ -49,6 +50,12 @@ class Messages extends Thread {
                 empty = queue.isEmpty();
                 if (!empty) {
                     oldest = queue.removeFirst();
+                } else {
+                    try {
+                        queueMutex.wait(); // wait for other threads to update state...
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
             if (!empty) {
