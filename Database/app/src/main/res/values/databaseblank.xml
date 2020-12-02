@@ -1,7 +1,7 @@
 <resources>
-    <string name="databaseUser" templateMergeStrategy="preserve" translatable="false">postgres</string>
-    <string name="databaseHost" templateMergeStrategy="preserve" translatable="false">DB HOST</string>
-    <string name="databasePort" templateMergeStrategy="preserve" translatable="false">5432</string>
-    <string name="databasePassword" templateMergeStrategy="preserve" translatable="false">DB KEY</string>
-    <string name="databaseName" templateMergeStrategy="preserve" translatable="false">java_kotlin_db1</string>
+    <string name="databaseBlankUser" templateMergeStrategy="preserve" translatable="false">postgres</string>
+    <string name="databaseBlankHost" templateMergeStrategy="preserve" translatable="false">DB HOST</string>
+    <string name="databaseBlankPort" templateMergeStrategy="preserve" translatable="false">5432</string>
+    <string name="databaseBlankPassword" templateMergeStrategy="preserve" translatable="false">DB KEY</string>
+    <string name="databaseBlankName" templateMergeStrategy="preserve" translatable="false">java_kotlin_db1</string>
 </resources>

@@ -12,7 +12,7 @@ class DatabaseKotlin {
     constructor(context : Context? = null) {
         this.context = context
     }
-    var context : Context? = null
+    var context : Context?
 
     val user
         get() = context!!.getString(R.string.databaseUser)
@@ -74,12 +74,12 @@ class DatabaseKotlin {
     }
 
     fun insertUser(idValue : String, nameValue : String, cityIdValue : Int?) : String {
-        val idValue = Users.insert {
+        val idValue2 = Users.insert {
             it[Users.id] = idValue
             it[Users.name] = nameValue
             it[Users.cityId] = cityIdValue
         } get Users.id
-        return idValue
+        return idValue2
     }
 
     fun getCityIdByName(cityName : String) : Int {
