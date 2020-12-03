@@ -1,5 +1,7 @@
 package edu.coloradomesa.cs.threads;
 
+import android.os.AsyncTask;
+
 import java.util.LinkedList;
 
 class Message {
@@ -15,6 +17,17 @@ class Message {
         return new Message(this.address,this.content);
     }
 
+    void send() {
+        System.out.println("sending " + this + "...");
+        try {
+            Thread.sleep((int)(Math.random()*1000));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        this.sent = true;
+        System.out.println(this.toString() + "sent.");
+    }
+
     public String toString() {
         return "message(to: " + address + ", " + content + ")";
     }
@@ -26,11 +39,11 @@ class Messages extends Thread {
     Messages() {
         start();
     }
-    LinkedList< Message > queue = new LinkedList<Message>();
-    Object queueMutex = new Object();
+    private LinkedList< Message > queue = new LinkedList<Message>(); // shared resource
+    private Object queueMutex = new Object(); // mutex object
     void addMessage(Message message) {
         Message copy = message.copy();
-        synchronized (queueMutex) {
+        synchronized (queueMutex) { // critical section
             queue.add(copy);
             queueMutex.notifyAll(); // other threads care about this change
         }
@@ -38,6 +51,7 @@ class Messages extends Thread {
     boolean done() {
         synchronized (queueMutex) {
             return queue.isEmpty();
+            // does not change queue, so no "notifyAll" here.
         }
     }
 
@@ -46,10 +60,11 @@ class Messages extends Thread {
         for (;;) {
             boolean empty = true;
             Message oldest = null;
-            synchronized (queueMutex) {
+            synchronized (queueMutex) { // critical section
                 empty = queue.isEmpty();
                 if (!empty) {
                     oldest = queue.removeFirst();
+                    queueMutex.notifyAll();
                 } else {
                     try {
                         queueMutex.wait(); // wait for other threads to update state...
@@ -59,16 +74,27 @@ class Messages extends Thread {
                 }
             }
             if (!empty) {
-                System.out.println("sending " + oldest + "...");
-                try {
-                    Thread.sleep((int)(Math.random()*1000));
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                oldest.sent = true;
-                System.out.println(oldest.toString() + "sent.");
+                oldest.send();
             }
         }
+    }
+
+    public void waitUntilDone() {
+        for (;;) {
+            synchronized (queueMutex) { // critical section
+                boolean empty = queue.isEmpty();
+                if (empty) {
+                    return;
+                } else {
+                    try {
+                        queueMutex.wait(); // wait for other threads to update state...
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
     }
 }
 
@@ -80,7 +106,14 @@ public class Main {
     void send() {
         messages.addMessage(current);
     }
+    void send2() {
+        Message copy = current.copy();
+        AsyncTask.execute(()->{
+            copy.send();
+        });
+    }
     boolean done() {
         return messages.done();
     }
+    void waitUntilDone() { messages.waitUntilDone(); }
 }

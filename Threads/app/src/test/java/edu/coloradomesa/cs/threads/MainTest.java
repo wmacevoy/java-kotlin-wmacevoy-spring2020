@@ -44,13 +44,6 @@ public class MainTest {
             main.setContent(randomString());
             main.send();
         }
-        while (!main.done()) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
+        main.waitUntilDone();
     }
 }
